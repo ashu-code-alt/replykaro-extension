@@ -1,0 +1,19 @@
+{
+  "name": "replykaro-extension",
+  "version": "1.0.0",
+  "main": "axios.min.js",
+  "scripts": {
+    "lint": "eslint **/*.js",
+    "format": "prettier --write **/*.{js,html,css}"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.0",
+    "prettier": "^3.5.3"
+  }
+}

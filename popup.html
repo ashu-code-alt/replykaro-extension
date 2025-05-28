@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ReplyKaro AI</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>ReplyKaro AI</h2>
+
+      <textarea
+        id="userInput"
+        placeholder="Paste or speak your message…"
+      ></textarea>
+
+      <button id="recordBtn" class="btn">🎤 Speak Message</button>
+      <div id="status" class="status"></div>
+
+      <div class="selectors">
+        <div class="field">
+          <label for="tone">Tone:</label>
+          <select id="tone" class="select">
+            <option value="friendly">🤝 Friendly</option>
+            <option value="assertive">🔥 Assertive</option>
+            <option value="calm">😌 Calm</option>
+            <option value="professional">💼 Professional</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="goal">Goal:</label>
+          <select id="goal" class="select">
+            <option value="reply">Just Reply</option>
+            <option value="followup">Follow-up</option>
+            <option value="delay">Delay Softly</option>
+            <option value="persuade">Persuade</option>
+          </select>
+        </div>
+      </div>
+
+      <button id="generateBtn" class="btn primary">Generate Reply</button>
+      <button id="copyBtn" class="btn" style="display: none">Copy 📋</button>
+
+      <div id="output" class="outputBox">
+        <div id="spinner" class="spinner hidden"></div>
+        <div id="replyText">Your email reply will appear here.</div>
+      </div>
+    </div>
+
+    <script src="axios.min.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,3 @@
+# Ignore bundled libraries and deps
+axios.min.js
+node_modules/
