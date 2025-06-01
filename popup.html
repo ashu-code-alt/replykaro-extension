@@ -1,53 +1,80 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>ReplyKaro AI</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <h2>ReplyKaro AI</h2>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HueComm AI</title>
 
+  <link rel="stylesheet" href="style.css" />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+</head>
+
+<body>
+  <div class="container">
+    <h2>HueComm AI</h2>
+
+    <div class="input-wrapper">
       <textarea
         id="userInput"
-        placeholder="Paste or speak your message…"
+        placeholder="Paste or speak your message..."
       ></textarea>
+      <button id="clearBtn" class="input-clear-btn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
 
-      <button id="recordBtn" class="btn">🎤 Speak Message</button>
-      <div id="status" class="status"></div>
+    <button id="recordBtn" class="btn">
+      <i class="fas fa-microphone"></i> Start Recording
+    </button>
 
-      <div class="selectors">
-        <div class="field">
-          <label for="tone">Tone:</label>
+    <div id="status" class="status"></div>
+
+    <div class="selectors">
+      <div class="field">
+        <label for="tone">Tone:</label>
+        <div class="select-wrapper">
           <select id="tone" class="select">
-            <option value="friendly">🤝 Friendly</option>
-            <option value="assertive">🔥 Assertive</option>
-            <option value="calm">😌 Calm</option>
-            <option value="professional">💼 Professional</option>
+            <option value="friendly">Friendly</option>
+            <option value="assertive">Assertive</option>
+            <option value="calm">Calm</option>
+            <option value="professional">Professional</option>
           </select>
+          <i class="fas fa-caret-down select-arrow"></i>
         </div>
-        <div class="field">
-          <label for="goal">Goal:</label>
+      </div>
+
+      <div class="field">
+        <label for="goal">Goal:</label>
+        <div class="select-wrapper">
           <select id="goal" class="select">
             <option value="reply">Just Reply</option>
             <option value="followup">Follow-up</option>
             <option value="delay">Delay Softly</option>
             <option value="persuade">Persuade</option>
           </select>
+          <i class="fas fa-caret-down select-arrow"></i>
         </div>
-      </div>
-
-      <button id="generateBtn" class="btn primary">Generate Reply</button>
-      <button id="copyBtn" class="btn" style="display: none">Copy 📋</button>
-
-      <div id="output" class="outputBox">
-        <div id="spinner" class="spinner hidden"></div>
-        <div id="replyText">Your email reply will appear here.</div>
       </div>
     </div>
 
-    <script src="axios.min.js"></script>
-    <script src="popup.js"></script>
-  </body>
+    <button id="generateBtn" class="btn primary">
+      <i class="fas fa-magic"></i> Generate Replies
+    </button>
+
+    <div id="output" class="output-box">
+      <div id="spinner" class="spinner hidden"></div>
+      <div id="repliesContainer"></div>
+    </div>
+  </div>
+
+  <script src="axios.min.js"></script>
+  <script src="popup.js"></script>
+</body>
 </html>

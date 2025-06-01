@@ -1,4 +1,4 @@
-# replykaro-extension/.github/workflows/ci.yml
+# HueComm-extension/.github/workflows/ci.yml
 name: Extension CI
 
 on:

@@ -1,27 +1,25 @@
 {
   "manifest_version": 3,
-  "name": "ReplyKaro AI",
-  "description": "Tone-aware AI assistant for emails and messages",
-  "version": "1.0",
-  "permissions": [
-    "storage",
-    "scripting",
-    "activeTab"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "name": "HueComm AI (Dev)",
+  "description": "Dev build of HueComm AI — generate 3 AI-driven email variants with scores",
+  "version": "1.0.0",
+  "version_name": "1.0.0-dev",
+
   "action": {
     "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icon.png",
-      "48": "icon.png",
-      "128": "icon.png"
-    }
+    "default_icon": "icon.png"
   },
-  "icons": {
-    "16": "icon.png",
-    "48": "icon.png",
-    "128": "icon.png"
+
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+
+  "host_permissions": [
+    "https://HueComm-backend-dev.onrender.com/*"
+  ],
+
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com"
   }
 }

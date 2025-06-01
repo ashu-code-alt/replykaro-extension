@@ -1,5 +1,5 @@
 {
-  "name": "replykaro-extension",
+  "name": "HueComm-extension",
   "version": "1.0.0",
   "main": "axios.min.js",
   "scripts": {
@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "HueComm AI backend",
   "devDependencies": {
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.5",
