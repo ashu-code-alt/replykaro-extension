@@ -1,298 +1,162 @@
+/* style.css */
+
+/* Root CSS variables */
 :root {
-  --primary: #5865f2;       /* “blurple” accent */
-  --bg: #f9f9fb;            /* very light grey background */
-  --fg: #23272a;            /* dark text */
-  --muted: #72767d;         /* muted grey */
-  --radius: 8px;
-  --gap: 12px;
-  --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --transition: all 0.2s ease-in-out;
-  --font-stack: system-ui, -apple-system, BlinkMacSystemFont,
-                "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-                "Open Sans", "Helvetica Neue", sans-serif;
+  --huecomm-blue: #4a90e2;
+  --huecomm-light-gray: #f2f2f2;
+  --huecomm-dark-gray: #333333;
+  --huecomm-font: "Segoe UI", Tahoma, sans-serif;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
+/* Reset & container */
 body {
-  font-family: var(--font-stack);
-  background: #fff;
-  color: var(--fg);
-  line-height: 1.6;
+  font-family: var(--huecomm-font);
+  margin: 0;
+  padding: 8px;
+  width: 360px;
+  background-color: var(--huecomm-light-gray);
 }
 
 .container {
-  width: 360px; /* Enough width for three variants */
-  padding: var(--gap);
+  display: flex;
+  flex-direction: column;
 }
 
+/* Headline */
 h2 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: var(--huecomm-dark-gray);
   text-align: center;
-  margin-bottom: var(--gap);
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--fg);
 }
 
-.input-wrapper {
-  position: relative;
-  margin-bottom: var(--gap);
-}
-
-textarea {
+/* Input fields */
+.input-field {
   width: 100%;
-  height: 90px;
-  padding: 12px;
+  margin-bottom: 8px;
+  padding: 6px;
   border: 1px solid #ccc;
-  border-radius: var(--radius);
-  resize: vertical;
-  font-size: 16px;
-  color: var(--fg);
-  transition: border-color 0.2s;
-}
-
-textarea:focus {
-  outline: none;
-  border-color: var(--primary);
-}
-
-textarea.recording {
-  border-color: #f00; /* red border when recording */
-}
-
-.input-clear-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: none;
-  border: none;
-  color: var(--muted);
-  cursor: pointer;
-  font-size: 1rem;
-  opacity: 0.6;
-  transition: opacity 0.2s;
-}
-
-.input-clear-btn:hover {
-  opacity: 1;
-}
-
-.status {
-  height: 20px;
-  margin: 4px 0 var(--gap);
+  border-radius: 4px;
   font-size: 14px;
-  color: var(--muted);
-  text-align: center;
+  box-sizing: border-box;
 }
 
-.selectors {
-  display: flex;
-  gap: var(--gap);
-  margin-bottom: var(--gap);
-}
-
-.field {
-  flex: 1;
-}
-
-.field label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 0.9rem;
-  color: var(--muted);
-}
-
-.select-wrapper {
-  position: relative;
-}
-
-.select {
-  width: 100%;
-  padding: 10px 30px 10px 12px; /* leave space for arrow */
-  border: 1px solid #ccc;
-  border-radius: var(--radius);
-  font-size: 1rem;
-  color: var(--fg);
-  appearance: none;
-  cursor: pointer;
-  transition: border-color 0.2s;
-}
-
-.select-arrow {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  color: var(--muted);
-  pointer-events: none;
-}
-
-.select:focus {
-  outline: none;
-  border-color: var(--primary);
-}
-
+/* Buttons */
 .btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  font-size: 1rem;
-  font-weight: 500;
-  border-radius: var(--radius);
-  border: none;
-  background-color: #f0f0f0;
-  color: var(--fg);
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: var(--transition);
-}
-
-.btn.primary {
-  background-color: var(--primary);
+  background-color: var(--huecomm-blue);
   color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 8px;
 }
 
 .btn:hover {
-  background-color: #e0e0e0;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #3c7dc0;
 }
 
-.btn.primary:hover {
-  background-color: #4c56c3;
+.btn-secondary {
+  background-color: #6c757d;
 }
 
-.btn:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.btn-secondary:hover {
+  background-color: #5a6268;
 }
 
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background-color: #ddd;
-  color: var(--muted);
-  box-shadow: none;
-  transform: none;
+/* Error messages */
+.error-msg {
+  color: red;
+  font-size: 12px;
+  margin-bottom: 8px;
 }
 
-.output-box {
-  position: relative;
-  margin-top: var(--gap);
-  padding: var(--gap);
-  background: var(--bg);
-  border-radius: var(--radius);
-  min-height: 120px;
-  box-shadow: var(--shadow);
+/* Selectors grouping */
+.selectors {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
-/* Spinner */
+/* Checkbox container */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-right: 6px;
+}
+
+/* Spinner (simple animation) */
 .spinner {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 20px;
-  height: 20px;
-  border: 3px solid #ccc;
-  border-top-color: var(--primary);
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--huecomm-blue);
   border-radius: 50%;
+  width: 24px;
+  height: 24px;
   animation: spin 1s linear infinite;
-}
-
-.hidden {
-  display: none !important;
+  margin: 0 auto 8px auto;
 }
 
 @keyframes spin {
-  to {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
     transform: rotate(360deg);
   }
 }
 
-/* Variant cards */
-.variant {
-  margin-bottom: var(--gap);
-  padding-bottom: var(--gap);
-  border-bottom: 1px solid #eee;
+/* Variants container */
+.variants-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
 }
 
-.variant:last-child {
-  margin-bottom: 0;
-  border-bottom: none;
-}
-
-.variant h3 {
-  font-size: 1.1rem;
-  font-weight: 500;
-  margin-bottom: 8px;
-  color: var(--fg);
-}
-
-.variant pre {
-  background: #fff;
+/* Each variant card */
+.variant-card {
+  background-color: white;
   border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: var(--radius);
-  white-space: pre-wrap;
-  font-size: 1rem;
-  color: var(--fg);
-  margin-bottom: 10px;
-  overflow-x: auto;
-}
-
-.variant .copy-btn {
-  background: none;
-  border: none;
-  color: var(--primary);
-  cursor: pointer;
-  font-size: 1rem;
-  opacity: 0.8;
-  transition: opacity 0.2s;
-  padding: 4px 8px;
+  padding: 8px;
   border-radius: 4px;
 }
 
-.variant .copy-btn:hover {
-  opacity: 1;
-  background-color: rgba(88, 101, 242, 0.1);
+.variant-text {
+  font-size: 13px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
-.scoreContainer {
+/* Score bar container */
+.score-container {
   display: flex;
   align-items: center;
-  gap: 8px;
+  margin-top: 6px;
 }
 
-.scoreBar {
-  position: relative;
-  flex: 1;
-  height: 10px;
-  background: #e0e0e0;
-  border-radius: 5px;
-  --fill-width: 0%;
-  overflow: hidden;
+.score-bar {
+  height: 6px;
+  background-color: var(--huecomm-blue);
+  border-radius: 3px;
+  flex-grow: 1;
+  margin-right: 8px;
 }
 
-.scoreBar::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: var(--fill-width);
-  background: linear-gradient(to right, var(--primary), #8e2de2);
-  border-radius: 5px;
+.score-label {
+  font-size: 12px;
+  color: var(--huecomm-dark-gray);
 }
 
-.scoreText {
-  font-size: 0.9rem;
-  color: var(--muted);
+/* Copy & Save buttons inside variant cards */
+.copy-btn,
+.save-btn {
+  margin-top: 6px;
+  padding: 4px 8px;
+  font-size: 13px;
 }

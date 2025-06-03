@@ -2,79 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';"
+  />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HueComm AI</title>
-
   <link rel="stylesheet" href="style.css" />
-
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
 </head>
-
 <body>
   <div class="container">
     <h2>HueComm AI</h2>
 
-    <div class="input-wrapper">
-      <textarea
-        id="userInput"
-        placeholder="Paste or speak your message..."
-      ></textarea>
-      <button id="clearBtn" class="input-clear-btn">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
+    <!-- Recipient Domain Input -->
+    <input
+      type="text"
+      id="recipientDomain"
+      placeholder="Recipient Domain (e.g., @acmecorp.com)"
+      class="input-field"
+    />
 
-    <button id="recordBtn" class="btn">
-      <i class="fas fa-microphone"></i> Start Recording
-    </button>
+    <!-- Message Textarea -->
+    <textarea
+      id="userInput"
+      class="input-field"
+      rows="4"
+      placeholder="Type your email or transcript here..."
+    ></textarea>
 
-    <div id="status" class="status"></div>
+    <!-- Voice Record Button -->
+    <button id="recordBtn" class="btn">🎤 Record (5s)</button>
+    <div id="micError" class="error-msg"></div>
 
+    <!-- Tone & Goal Selectors -->
     <div class="selectors">
-      <div class="field">
-        <label for="tone">Tone:</label>
-        <div class="select-wrapper">
-          <select id="tone" class="select">
-            <option value="friendly">Friendly</option>
-            <option value="assertive">Assertive</option>
-            <option value="calm">Calm</option>
-            <option value="professional">Professional</option>
-          </select>
-          <i class="fas fa-caret-down select-arrow"></i>
-        </div>
-      </div>
-
-      <div class="field">
-        <label for="goal">Goal:</label>
-        <div class="select-wrapper">
-          <select id="goal" class="select">
-            <option value="reply">Just Reply</option>
-            <option value="followup">Follow-up</option>
-            <option value="delay">Delay Softly</option>
-            <option value="persuade">Persuade</option>
-          </select>
-          <i class="fas fa-caret-down select-arrow"></i>
-        </div>
-      </div>
+      <select id="toneSelect" class="input-field">
+        <option value="Polite">Polite</option>
+        <option value="Casual">Casual</option>
+        <option value="Assertive">Assertive</option>
+        <option value="Witty">Witty</option>
+      </select>
+      <select id="goalSelect" class="input-field">
+        <option value="Get a reply fast">Get a reply fast</option>
+        <option value="Follow-up">Follow-up</option>
+        <option value="Delay softly">Delay softly</option>
+        <option value="Persuade respectfully">Persuade respectfully</option>
+      </select>
     </div>
 
-    <button id="generateBtn" class="btn primary">
-      <i class="fas fa-magic"></i> Generate Replies
-    </button>
+    <!-- Style Memory Opt-in -->
+    <label class="checkbox-container">
+      <input type="checkbox" id="optInStyleMemory" />
+      Enable Style Memory
+    </label>
 
-    <div id="output" class="output-box">
-      <div id="spinner" class="spinner hidden"></div>
-      <div id="repliesContainer"></div>
+    <!-- Generate Button -->
+    <button id="generateBtn" class="btn">Generate Reply</button>
+    <div id="errorMessage" class="error-msg"></div>
+    <div id="spinner" class="spinner" style="display: none;"></div>
+
+    <!-- Load Favorite Button -->
+    <button id="loadFavorite" class="btn btn-secondary">Load Favorite</button>
+
+    <!-- Three Variant Cards -->
+    <div id="variantsContainer" class="variants-container">
+      <div class="variant-card" id="variant0">
+        <pre class="variant-text" id="variantText0"></pre>
+        <div class="score-container">
+          <div class="score-bar" id="scoreBar0" style="width: 0%"></div>
+          <span class="score-label" id="scoreLabel0"></span>
+        </div>
+        <button class="btn copy-btn" data-index="0">Copy</button>
+        <button class="btn save-btn" data-index="0">⭐ Save</button>
+      </div>
+      <div class="variant-card" id="variant1">
+        <pre class="variant-text" id="variantText1"></pre>
+        <div class="score-container">
+          <div class="score-bar" id="scoreBar1" style="width: 0%"></div>
+          <span class="score-label" id="scoreLabel1"></span>
+        </div>
+        <button class="btn copy-btn" data-index="1">Copy</button>
+        <button class="btn save-btn" data-index="1">⭐ Save</button>
+      </div>
+      <div class="variant-card" id="variant2">
+        <pre class="variant-text" id="variantText2"></pre>
+        <div class="score-container">
+          <div class="score-bar" id="scoreBar2" style="width: 0%"></div>
+          <span class="score-label" id="scoreLabel2"></span>
+        </div>
+        <button class="btn copy-btn" data-index="2">Copy</button>
+        <button class="btn save-btn" data-index="2">⭐ Save</button>
+      </div>
     </div>
   </div>
 
-  <script src="axios.min.js"></script>
+  <!-- 1. Load Axios from CDN so 'axios' is defined -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- 2. Then load our main popup.js file -->
   <script src="popup.js"></script>
 </body>
 </html>

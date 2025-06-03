@@ -6,3 +6,8 @@ apikey.js
 node_modules
 .github
 HueComm-extension.zip
+node_modules/
+dist/
+*.log
+# Ignore all node_modules
+node_modules/

@@ -3,18 +3,18 @@ module.exports = {
     browser: true,
     es2021: true
   },
+  // Declare 'chrome' and 'axios' as global read-only variables
   globals: {
-    axios: 'readonly'    // acknowledge axios from your <script> tag
+    chrome: "readonly",
+    axios: "readonly"
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:prettier/recommended'
-  ],
+  extends: ["eslint:recommended", "plugin:prettier/recommended"],
   parserOptions: {
-    ecmaVersion: 'latest'
+    ecmaVersion: 12,
+    sourceType: "module"
   },
   rules: {
-    'no-unused-vars': ['warn'],
-    'no-console': ['off']
+    "no-unused-vars": "warn",
+    "no-console": "off"
   }
 };

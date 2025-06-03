@@ -1,19 +1,19 @@
 {
-  "name": "HueComm-extension",
+  "name": "huecomm-extension",
   "version": "1.0.0",
-  "main": "axios.min.js",
+  "description": "HueComm AI Chrome Extension frontend",
   "scripts": {
-    "lint": "eslint **/*.js",
-    "format": "prettier --write **/*.{js,html,css}"
+    "lint": "eslint ."
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "HueComm AI backend",
+  "author": "Ashish Yadav <ashish@example.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.4.0"
+  },
   "devDependencies": {
-    "eslint": "^8.57.1",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-prettier": "^5.4.0",
-    "prettier": "^3.5.3"
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.1.1",
+    "prettier": "^3.0.0"
   }
 }
