@@ -8,47 +8,67 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="app">
+  <!-- Wrap everything in .container so flex-direction: column works -->
+  <div class="container">
     <h2>HueComm</h2>
 
-    <!-- GENERATE REPLY SECTION (unchanged) -->
-    <textarea id="inputMessage" placeholder="Type your message…"></textarea>
-    <select id="toneSelector">
+    <!-- ===========================
+         GENERATE REPLY SECTION
+         (unchanged, but now hooked up to CSS classes)
+         =========================== -->
+    <textarea
+      id="inputMessage"
+      class="input-field"
+      placeholder="Type your message…"
+    ></textarea>
+
+    <select id="toneSelector" class="input-field">
       <option value="professional">Professional</option>
       <option value="casual">Casual</option>
       <option value="friendly">Friendly</option>
       <option value="sarcastic">Sarcastic</option>
     </select>
-    <button id="generateReplyBtn">Generate Reply</button>
+
+    <button id="generateReplyBtn" class="btn btn-primary">
+      Generate Reply
+    </button>
+
     <div id="replyResult"></div>
 
     <hr />
 
-    <!-- TRANSLATE SECTION (NEW) -->
+    <!-- ===========================
+         TRANSLATE SECTION (NEW)
+         =========================== -->
     <h3>Translate</h3>
-    <textarea id="textToTranslate" placeholder="Text to translate…"></textarea>
+
+    <textarea
+      id="textToTranslate"
+      class="input-field"
+      placeholder="Text to translate…"
+    ></textarea>
 
     <div class="lang-row">
       <label for="sourceLang">From:</label>
-      <select id="sourceLang">
+      <select id="sourceLang" class="input-field small-select">
         <option value="en">English</option>
         <option value="es">Spanish</option>
         <option value="fr">French</option>
-        <!-- add more languages as desired -->
+        <!-- add more languages as needed -->
       </select>
 
       <label for="targetLang">To:</label>
-      <select id="targetLang">
+      <select id="targetLang" class="input-field small-select">
         <option value="en">English</option>
         <option value="es">Spanish</option>
         <option value="fr">French</option>
-        <!-- add more languages as desired -->
+        <!-- add more languages as needed -->
       </select>
     </div>
 
     <div class="tone-row">
       <label for="translateTone">Tone:</label>
-      <select id="translateTone">
+      <select id="translateTone" class="input-field small-select">
         <option value="professional">Professional</option>
         <option value="casual">Casual</option>
         <option value="friendly">Friendly</option>
@@ -56,7 +76,10 @@
       </select>
     </div>
 
-    <button id="translateBtn">Translate</button>
+    <button id="translateBtn" class="btn btn-primary">
+      Translate
+    </button>
+
     <div id="translateResult"></div>
   </div>
 

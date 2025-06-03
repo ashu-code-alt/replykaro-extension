@@ -30,6 +30,13 @@ h2 {
   text-align: center;
 }
 
+/* Sub‐headline / section titles */
+h3 {
+  margin: 16px 0 8px 0;
+  font-size: 16px;
+  color: var(--huecomm-dark-gray);
+}
+
 /* Input fields */
 .input-field {
   width: 100%;
@@ -39,6 +46,12 @@ h2 {
   border-radius: 4px;
   font-size: 14px;
   box-sizing: border-box;
+}
+
+/* A smaller fixed‐width variant (for the language/tone dropdowns) */
+.small-select {
+  width: 100px; /* or whatever width makes sense for your language codes */
+  margin-right: 12px;
 }
 
 /* Buttons */
@@ -53,110 +66,70 @@ h2 {
   margin-bottom: 8px;
 }
 
-.btn:hover {
+.btn-primary {
+  background-color: var(--huecomm-blue);
+}
+
+.btn-primary:hover {
   background-color: #3c7dc0;
 }
 
-.btn-secondary {
-  background-color: #6c757d;
+/* Horizontal rule between sections */
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 16px 0;
 }
 
-.btn-secondary:hover {
-  background-color: #5a6268;
-}
-
-/* Error messages */
-.error-msg {
-  color: red;
-  font-size: 12px;
-  margin-bottom: 8px;
-}
-
-/* Selectors grouping */
-.selectors {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-/* Checkbox container */
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-
-.checkbox-container input[type="checkbox"] {
-  margin-right: 6px;
-}
-
-/* Spinner (simple animation) */
-.spinner {
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid var(--huecomm-blue);
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 8px auto;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Variants container */
-.variants-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-/* Each variant card */
-.variant-card {
+/* Results containers (just give them some padding/background) */
+#replyResult,
+#translateResult {
   background-color: white;
-  border: 1px solid #ddd;
   padding: 8px;
   border-radius: 4px;
+  min-height: 40px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+  font-size: 14px;
+  color: var(--huecomm-dark-gray);
 }
 
-.variant-text {
-  font-size: 13px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-/* Score bar container */
-.score-container {
-  display: flex;
-  align-items: center;
-  margin-top: 6px;
-}
-
-.score-bar {
-  height: 6px;
-  background-color: var(--huecomm-blue);
-  border-radius: 3px;
-  flex-grow: 1;
-  margin-right: 8px;
-}
-
+/* Label for any scores or small text (not used here, but present if needed) */
 .score-label {
   font-size: 12px;
   color: var(--huecomm-dark-gray);
 }
 
-/* Copy & Save buttons inside variant cards */
+/* Copy & Save buttons inside variant cards (not used here, but keep from original) */
 .copy-btn,
 .save-btn {
   margin-top: 6px;
   padding: 4px 8px;
   font-size: 13px;
+}
+
+/* ===========================================
+   NEW RULES FOR LANGUAGE ROW / TONE ROW
+   =========================================== */
+
+/* A row for "From: [dropdown]  To: [dropdown]" */
+.lang-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+/* A row for "Tone: [dropdown]" */
+.tone-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* Style for the labels inside those rows */
+.lang-row label,
+.tone-row label {
+  margin-right: 4px;
+  font-size: 14px;
+  color: var(--huecomm-dark-gray);
 }
