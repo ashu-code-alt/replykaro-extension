@@ -1,5 +1,5 @@
 // popup.js
-// This script handles both “Generate Reply” and “Translate” functionality.
+// Handles both “Generate Reply” and “Translate” flows.
 
 document.addEventListener("DOMContentLoaded", () => {
   const generateBtn = document.getElementById("generateReplyBtn");
@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function handleGenerateReply() {
   const text = document.getElementById("inputMessage").value.trim();
   const tone = document.getElementById("toneSelector").value;
+  const mood = document.getElementById("moodSelector").value;
   const resultDiv = document.getElementById("replyResult");
 
   if (!text) {
@@ -21,13 +22,17 @@ async function handleGenerateReply() {
 
   resultDiv.innerText = "Generating reply…";
   try {
+    // Send both tone and mood in the payload
     const response = await axios.post("http://localhost:3000/generate-reply", {
       text,
-      tone
+      tone,
+      mood
     });
-    // Assume backend returns { variants: [ "...", "...", "..." ] }
+    // Expecting backend to still return { variants: [ "...", "...", "..." ] }
     const { variants } = response.data;
-    resultDiv.innerHTML = variants.map(v => `<p>${v}</p>`).join("<hr/>");
+    resultDiv.innerHTML = variants
+      .map((v) => `<p>${v}</p>`)
+      .join("<hr/>");
   } catch (err) {
     console.error(err);
     resultDiv.innerText = "Error generating reply.";

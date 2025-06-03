@@ -8,13 +8,11 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Wrap everything in .container so flex-direction: column works -->
   <div class="container">
     <h2>HueComm</h2>
 
     <!-- ===========================
          GENERATE REPLY SECTION
-         (unchanged, but now hooked up to CSS classes)
          =========================== -->
     <textarea
       id="inputMessage"
@@ -22,23 +20,39 @@
       placeholder="Type your message…"
     ></textarea>
 
-    <select id="toneSelector" class="input-field">
-      <option value="professional">Professional</option>
-      <option value="casual">Casual</option>
-      <option value="friendly">Friendly</option>
-      <option value="sarcastic">Sarcastic</option>
-    </select>
+    <!-- Tone + Mood dropdowns, side by side -->
+    <div class="row-selectors">
+      <div class="selector-group">
+        <label for="toneSelector">Tone:</label>
+        <select id="toneSelector" class="input-field small-select">
+          <option value="professional">Professional</option>
+          <option value="casual">Casual</option>
+          <option value="friendly">Friendly</option>
+          <option value="sarcastic">Sarcastic</option>
+        </select>
+      </div>
+
+      <div class="selector-group">
+        <label for="moodSelector">Mood:</label>
+        <select id="moodSelector" class="input-field small-select">
+          <option value="neutral">Neutral</option>
+          <option value="happy">Happy</option>
+          <option value="sad">Sad</option>
+          <option value="angry">Angry</option>
+          <option value="excited">Excited</option>
+        </select>
+      </div>
+    </div>
 
     <button id="generateReplyBtn" class="btn btn-primary">
       Generate Reply
     </button>
-
     <div id="replyResult"></div>
 
     <hr />
 
     <!-- ===========================
-         TRANSLATE SECTION (NEW)
+         TRANSLATE SECTION (unchanged)
          =========================== -->
     <h3>Translate</h3>
 
@@ -54,7 +68,6 @@
         <option value="en">English</option>
         <option value="es">Spanish</option>
         <option value="fr">French</option>
-        <!-- add more languages as needed -->
       </select>
 
       <label for="targetLang">To:</label>
@@ -62,7 +75,6 @@
         <option value="en">English</option>
         <option value="es">Spanish</option>
         <option value="fr">French</option>
-        <!-- add more languages as needed -->
       </select>
     </div>
 
@@ -79,7 +91,6 @@
     <button id="translateBtn" class="btn btn-primary">
       Translate
     </button>
-
     <div id="translateResult"></div>
   </div>
 

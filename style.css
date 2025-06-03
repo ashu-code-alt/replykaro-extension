@@ -48,9 +48,9 @@ h3 {
   box-sizing: border-box;
 }
 
-/* A smaller fixed‐width variant (for the language/tone dropdowns) */
+/* A smaller fixed‐width variant (for dropdowns in row‐selectors, language‐rows, etc.) */
 .small-select {
-  width: 100px; /* or whatever width makes sense for your language codes */
+  width: 100px;
   margin-right: 12px;
 }
 
@@ -74,14 +74,14 @@ h3 {
   background-color: #3c7dc0;
 }
 
-/* Horizontal rule between sections */
+/* Horizontal rule */
 hr {
   border: none;
   border-top: 1px solid #ccc;
   margin: 16px 0;
 }
 
-/* Results containers (just give them some padding/background) */
+/* Results containers */
 #replyResult,
 #translateResult {
   background-color: white;
@@ -94,41 +94,45 @@ hr {
   color: var(--huecomm-dark-gray);
 }
 
-/* Label for any scores or small text (not used here, but present if needed) */
-.score-label {
-  font-size: 12px;
-  color: var(--huecomm-dark-gray);
-}
-
-/* Copy & Save buttons inside variant cards (not used here, but keep from original) */
-.copy-btn,
-.save-btn {
-  margin-top: 6px;
-  padding: 4px 8px;
-  font-size: 13px;
-}
-
-/* ===========================================
-   NEW RULES FOR LANGUAGE ROW / TONE ROW
-   =========================================== */
-
-/* A row for "From: [dropdown]  To: [dropdown]" */
+/* Language row & tone row (Translate section) */
 .lang-row {
   display: flex;
   align-items: center;
   margin-bottom: 8px;
 }
 
-/* A row for "Tone: [dropdown]" */
 .tone-row {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
 }
 
-/* Style for the labels inside those rows */
 .lang-row label,
 .tone-row label {
+  margin-right: 4px;
+  font-size: 14px;
+  color: var(--huecomm-dark-gray);
+}
+
+/* ===========================================
+   NEW RULES FOR "Tone + Mood" row selectors
+   =========================================== */
+
+/* Wrap the two selector‐groups (Tone + Mood) side by side */
+.row-selectors {
+  display: flex;
+  align-items: center;
+  gap: 16px;           /* space between Tone group and Mood group */
+  margin-bottom: 12px; /* space before the Generate button */
+}
+
+/* Each group has its own label + dropdown */
+.selector-group {
+  display: flex;
+  align-items: center;
+}
+
+.selector-group label {
   margin-right: 4px;
   font-size: 14px;
   color: var(--huecomm-dark-gray);
