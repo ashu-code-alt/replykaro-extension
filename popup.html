@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';"
-  />
+  <!-- 
+    No external CDN scripts allowed under MV3 CSP.
+    We’ll load axios from a local file (axios.min.js) instead.
+  -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HueComm AI</title>
   <link rel="stylesheet" href="style.css" />
@@ -14,7 +14,7 @@
   <div class="container">
     <h2>HueComm AI</h2>
 
-    <!-- Recipient Domain Input -->
+    <!-- Recipient Domain input (for Persona Mirror) -->
     <input
       type="text"
       id="recipientDomain"
@@ -22,7 +22,7 @@
       class="input-field"
     />
 
-    <!-- Message Textarea -->
+    <!-- Main textarea for user message or transcript -->
     <textarea
       id="userInput"
       class="input-field"
@@ -50,22 +50,23 @@
       </select>
     </div>
 
-    <!-- Style Memory Opt-in -->
+    <!-- Style Memory checkbox -->
     <label class="checkbox-container">
       <input type="checkbox" id="optInStyleMemory" />
       Enable Style Memory
     </label>
 
-    <!-- Generate Button -->
+    <!-- Generate Reply button -->
     <button id="generateBtn" class="btn">Generate Reply</button>
     <div id="errorMessage" class="error-msg"></div>
     <div id="spinner" class="spinner" style="display: none;"></div>
 
-    <!-- Load Favorite Button -->
+    <!-- Load Favorite Variant button -->
     <button id="loadFavorite" class="btn btn-secondary">Load Favorite</button>
 
-    <!-- Three Variant Cards -->
+    <!-- Output: Three Variant Cards -->
     <div id="variantsContainer" class="variants-container">
+      <!-- Variant #1 -->
       <div class="variant-card" id="variant0">
         <pre class="variant-text" id="variantText0"></pre>
         <div class="score-container">
@@ -75,6 +76,7 @@
         <button class="btn copy-btn" data-index="0">Copy</button>
         <button class="btn save-btn" data-index="0">⭐ Save</button>
       </div>
+      <!-- Variant #2 -->
       <div class="variant-card" id="variant1">
         <pre class="variant-text" id="variantText1"></pre>
         <div class="score-container">
@@ -84,6 +86,7 @@
         <button class="btn copy-btn" data-index="1">Copy</button>
         <button class="btn save-btn" data-index="1">⭐ Save</button>
       </div>
+      <!-- Variant #3 -->
       <div class="variant-card" id="variant2">
         <pre class="variant-text" id="variantText2"></pre>
         <div class="score-container">
@@ -96,9 +99,9 @@
     </div>
   </div>
 
-  <!-- 1. Load Axios from CDN so 'axios' is defined -->
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <!-- 2. Then load our main popup.js file -->
+  <!-- Load axios from a local file instead of CDN -->
+  <script src="axios.min.js"></script>
+  <!-- Then load our extension’s logic -->
   <script src="popup.js"></script>
 </body>
 </html>
