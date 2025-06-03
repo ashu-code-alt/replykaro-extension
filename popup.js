@@ -1,157 +1,200 @@
 // popup.js
 
-// ↳ Point to your Dev backend:
-const API = "https://HueComm-backend-dev.onrender.com";
+const BACKEND_URL = 'https://huecomm-backend-dev.onrender.com'; // Change to http://localhost:5050 if testing locally
 
-const userInput       = document.getElementById("userInput");
-const toneSelect      = document.getElementById("tone");
-const goalSelect      = document.getElementById("goal");
-const statusEl        = document.getElementById("status");
-const recBtn          = document.getElementById("recordBtn");
-const genBtn          = document.getElementById("generateBtn");
-const spinner         = document.getElementById("spinner");
-const repliesContainer = document.getElementById("repliesContainer");
-const clearBtn        = document.getElementById("clearBtn");
+// UI Elements
+const userInput = document.getElementById('userInput');
+const toneSelect = document.getElementById('toneSelect');
+const goalSelect = document.getElementById('goalSelect');
+const recordBtn = document.getElementById('recordBtn');
+const optInStyleMemory = document.getElementById('optInStyleMemory');
+const generateBtn = document.getElementById('generateBtn');
+const errorMessage = document.getElementById('errorMessage');
+const micError = document.getElementById('micError');
+const spinner = document.getElementById('spinner');
+const loadFavoriteBtn = document.getElementById('loadFavorite');
 
-// Utility: set status message (error or normal)
-function setStatus(msg, isError = false) {
-  statusEl.innerText = msg;
-  statusEl.style.color = isError ? "#d00" : "#555";
+// Variant containers
+const variantTextEls = [
+  document.getElementById('variantText0'),
+  document.getElementById('variantText1'),
+  document.getElementById('variantText2'),
+];
+const scoreBarEls = [
+  document.getElementById('scoreBar0'),
+  document.getElementById('scoreBar1'),
+  document.getElementById('scoreBar2'),
+];
+const scoreLabelEls = [
+  document.getElementById('scoreLabel0'),
+  document.getElementById('scoreLabel1'),
+  document.getElementById('scoreLabel2'),
+];
+const copyBtns = document.querySelectorAll('.copy-btn');
+const saveBtns = document.querySelectorAll('.save-btn');
+
+let mediaRecorder;
+let audioChunks = [];
+
+/**
+ * getUserId()
+ * Returns a Promise that resolves to a persistent userId stored in chrome.storage.local.
+ * If no ID exists yet, creates a new UUID and stores it.
+ */
+function getUserId() {
+  return new Promise((resolve) => {
+    chrome.storage.local.get(['huecommUserId'], (result) => {
+      if (result.huecommUserId) {
+        resolve(result.huecommUserId);
+      } else {
+        const newId = crypto.randomUUID();
+        chrome.storage.local.set({ huecommUserId: newId }, () => {
+          resolve(newId);
+        });
+      }
+    });
+  });
 }
 
-// Utility: toggle loading spinner + disable buttons
-function setLoading(on) {
-  spinner.classList.toggle("hidden", !on);
-  genBtn.disabled = recBtn.disabled = on;
-  if (on) {
-    // Clear any previous replies + status
-    setStatus("");
-    repliesContainer.innerHTML = "";
+/**
+ * Load the favorite variant (if any) from chrome.storage.local and fill the textarea.
+ */
+loadFavoriteBtn.addEventListener('click', () => {
+  chrome.storage.local.get(['favoriteVariant'], (result) => {
+    if (result.favoriteVariant) {
+      userInput.value = result.favoriteVariant;
+    } else {
+      alert('No favorite variant saved yet.');
+    }
+  });
+});
+
+/**
+ * Copy variant text to clipboard when “Copy” button is clicked.
+ */
+copyBtns.forEach((btn) => {
+  btn.addEventListener('click', (event) => {
+    const idx = event.target.dataset.index;
+    const textToCopy = variantTextEls[idx].innerText;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      event.target.innerText = 'Copied!';
+      setTimeout(() => (event.target.innerText = 'Copy'), 1500);
+    });
+  });
+});
+
+/**
+ * Save a variant as “favorite” in chrome.storage.local when “⭐ Save” is clicked.
+ */
+saveBtns.forEach((btn) => {
+  btn.addEventListener('click', (event) => {
+    const idx = event.target.dataset.index;
+    const textToSave = variantTextEls[idx].innerText;
+    chrome.storage.local.set({ favoriteVariant: textToSave }, () => {
+      event.target.innerText = 'Saved!';
+      setTimeout(() => (event.target.innerText = '⭐ Save'), 1500);
+    });
+  });
+});
+
+/**
+ * Handling voice recording for ~5 seconds, sending to /transcribe-audio,
+ * and populating the textarea with the resulting transcript.
+ */
+recordBtn.addEventListener('click', async () => {
+  micError.innerText = '';
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+    mediaRecorder.start();
+
+    mediaRecorder.addEventListener('dataavailable', (event) => {
+      audioChunks.push(event.data);
+    });
+
+    mediaRecorder.addEventListener('stop', async () => {
+      const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+      const formData = new FormData();
+      formData.append('audio', audioBlob, 'recording.webm');
+
+      try {
+        const resp = await axios.post(
+          `${BACKEND_URL}/transcribe-audio`,
+          formData,
+          {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          }
+        );
+        userInput.value = resp.data.transcript;
+      } catch (err) {
+        micError.innerText = 'Transcription failed. Try again.';
+      }
+    });
+
+    // Stop recording after 5 seconds
+    setTimeout(() => mediaRecorder.stop(), 5000);
+  } catch (err) {
+    micError.innerText = 'Cannot access microphone. Check permissions.';
   }
-}
+});
 
-// -------- Clear button: empties the textarea --------
-clearBtn.onclick = () => {
-  userInput.value = "";
-  userInput.focus();
-};
+/**
+ * When “Generate Reply” is clicked:
+ * 1. Validate input.
+ * 2. Optionally retrieve userId if style memory is checked.
+ * 3. POST to /generate-reply with message, tone, goal, userId, recipientDomain.
+ * 4. Display returned variants & their success probabilities.
+ */
+generateBtn.addEventListener('click', async () => {
+  errorMessage.innerText = '';
+  spinner.style.display = 'block';
 
-// -------- Generate 3 variants + scores --------
-genBtn.onclick = async () => {
-  if (!userInput.value.trim()) {
-    setStatus("Please enter or speak a message.", true);
+  const message = userInput.value.trim();
+  const tone = toneSelect.value;
+  const goal = goalSelect.value;
+  const recipientDomain = document
+    .getElementById('recipientDomain')
+    .value.trim();
+  const styleMemoryChecked = optInStyleMemory.checked;
+
+  if (!message) {
+    errorMessage.innerText = 'Please enter a message or transcript first.';
+    spinner.style.display = 'none';
     return;
   }
-  setLoading(true);
 
   try {
-    // POST to /generate-reply with variants: 3
-    const { data } = await axios.post(`${API}/generate-reply`, {
-      message: userInput.value,
-      tone: toneSelect.value,
-      goal: goalSelect.value,
-      variants: 3
+    const userId = styleMemoryChecked ? await getUserId() : null;
+
+    // Build payload for backend
+    const payload = {
+      message,
+      tone,
+      goal,
+      userId,
+      recipientDomain: recipientDomain || null,
+    };
+
+    // Call /generate-reply
+    const resp = await axios.post(`${BACKEND_URL}/generate-reply`, payload, {
+      headers: { 'Content-Type': 'application/json' },
     });
 
-    const { replies = [], scores = [] } = data;
+    const { scoredVariants } = resp.data;
 
-    // Clear container, then render each variant
-    repliesContainer.innerHTML = "";
-    replies.forEach((reply, i) => {
-      const score = scores[i] ?? 0;
-
-      // Outer card for this variant
-      const card = document.createElement("div");
-      card.className = "variant";
-
-      // Header “Variant 1”, “Variant 2”, etc.
-      const h3 = document.createElement("h3");
-      h3.innerText = `Variant ${i + 1}`;
-      card.appendChild(h3);
-
-      // Preformatted block for the reply text
-      const pre = document.createElement("pre");
-      pre.innerText = reply;
-      card.appendChild(pre);
-
-      // Copy button for this variant
-      const copyBtn = document.createElement("button");
-      copyBtn.className = "copy-btn";
-      copyBtn.innerHTML = `<i class="fas fa-copy"></i> Copy`;
-      copyBtn.onclick = () => {
-        navigator.clipboard.writeText(reply)
-          .then(() => setStatus("Variant Copied!"))
-          .catch(() => setStatus("Copy failed.", true));
-      };
-      card.appendChild(copyBtn);
-
-      // Score bar + text
-      const sc = document.createElement("div");
-      sc.className = "scoreContainer";
-      const bar = document.createElement("div");
-      bar.className = "scoreBar";
-      bar.style.setProperty("--fill-width", `${score}%`);
-      sc.appendChild(bar);
-
-      const txt = document.createElement("span");
-      txt.className = "scoreText";
-      txt.innerText = `Predicted ${score}%`;
-      sc.appendChild(txt);
-
-      card.appendChild(sc);
-
-      repliesContainer.appendChild(card);
+    // Display each variant and its successProbability
+    scoredVariants.forEach((variantObj, idx) => {
+      variantTextEls[idx].innerText = variantObj.text;
+      const prob = variantObj.successProbability || 0;
+      scoreBarEls[idx].style.width = `${prob}%`;
+      scoreLabelEls[idx].innerText =
+        variantObj.successProbability !== null ? `${prob}% likely` : 'N/A';
     });
-
-    setStatus("Replies generated.");
   } catch (err) {
     console.error(err);
-    setStatus("Failed to generate replies.", true);
+    errorMessage.innerText = 'Failed to generate replies. Please try again.';
   } finally {
-    setLoading(false);
+    spinner.style.display = 'none';
   }
-};
-
-// -------- Voice recording → Whisper transcription --------
-recBtn.onclick = async () => {
-  setLoading(true);
-  let stream;
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  } catch (err) {
-    setStatus("Microphone access denied.", true);
-    setLoading(false);
-    return;
-  }
-
-  const recorder = new MediaRecorder(stream);
-  const chunks = [];
-  recorder.ondataavailable = e => chunks.push(e.data);
-
-  recorder.onstop = async () => {
-    // Stop mic tracks
-    stream.getTracks().forEach(t => t.stop());
-
-    // Send to backend (/transcribe-audio)
-    const blob = new Blob(chunks, { type: chunks[0].type });
-    const form = new FormData();
-    form.append("audio", blob, "voice.webm");
-
-    try {
-      setStatus("Transcribing…");
-      const resp = await axios.post(`${API}/transcribe-audio`, form);
-      // Put the transcript back into the textarea:
-      userInput.value = resp.data.transcript;
-      setStatus("Transcribed! Ready to generate.");
-    } catch (err) {
-      console.error(err);
-      setStatus("Transcription failed.", true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Record ~5 seconds then stop
-  recorder.start();
-  setTimeout(() => recorder.stop(), 5000);
-};
+});
